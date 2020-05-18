@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>画一条0.5px的线——meta viewport方式实现(只在移动端生效)</title>
+		<meta name="viewport" content="width=device-width,initial-scale=0.5,minimum-scale=0.5,maximum-scale=0.5,user-scalable=no" />
+		<style>
+			.container {
+				width: 800px;
+				height: 600px;
+				padding: 20px;
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				margin: auto;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.line1 {
+				width: 300px;
+				height: 0.5px;
+				background-color: red;
+			}
+
+			.line2 {
+				width: 300px;
+				height: 1px;
+				background-color: red;
+				margin: 120px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="line1"></div>
+			<div class="line2"></div>
+		</div>
+
+	</body>
+</html>

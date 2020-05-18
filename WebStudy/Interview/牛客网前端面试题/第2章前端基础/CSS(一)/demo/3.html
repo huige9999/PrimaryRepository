@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>画一条0.5px的线——transform方式</title>
+		<style>
+			.container {
+				width: 800px;
+				height: 600px;
+				padding: 20px;
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				margin: auto;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.line1 {
+				width: 300px;
+				height: 1px;
+				background-color: red;
+				transform:scaleY(0.5);
+			}
+
+			.line2 {
+				width: 300px;
+				height: 1px;
+				background-color: red;
+				margin: 120px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="line1"></div>
+			<div class="line2"></div>
+		</div>
+
+	</body>
+</html>

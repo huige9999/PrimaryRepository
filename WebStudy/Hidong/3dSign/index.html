@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>3D签到</title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			.sign-container {
+			/* 	width: 80vw;
+				height: 80vh;
+				position: absolute;
+				left:50%;
+				transform: translateX(-50%); */
+			}
+		</style>
+	</head>
+	<body>
+		<div class="sign-container">
+
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
+		<script type="module">
+			//html中引入es6模块 需要在script加属性 type="module"
+			import THREE from './lib/CSS3DRenderer.js';
+			//目标位置
+			//拼成各种3D图案
+			let targets = {
+				sphere: [], //球体
+				table:[],//矩阵
+			};
+			let origin = [];
+			// let TWEEN = createjs.Tween;
+			//相机、场景、渲染器
+			//相机：观察者的视角、场景：放置被观察对象、渲染器：渲染被观察对象
+			let camera, scene, renderer;
+			//Dom
+			let elSignContainer = document.querySelector('.sign-container');
+			elSignContainer.style.width = window.innerWidth+'px';
+			elSignContainer.style.height = window.innerHeight+'px';
+			//内容区域宽高
+			const WIDTH = elSignContainer.offsetWidth;
+			const HEIGTH = elSignContainer.offsetHeight;
+			//保存requestAnimationFrame返回的结果
+			let frame;
+			test();
+			//测试方法
+			function test() {
+				//createTransparentSquare()
+				init();
+			}
+			//初始化数据
+			function init() {
+				// createjs.CSSPlugin.install();
+				//PerspectiveCamera(fov,aspect,near,far)
+				//fov:摄像机视锥体垂直视野角度,范围0~180度，默认50度
+				//aspect:表示摄像机视锥体长宽比，默认长宽比为1，即表示看到的是正方形，实际项目中使用的是屏幕的宽高比
+				//near:表示摄像机视锥体近端面，这个值默认为0.1，实际项目中都会设置为1；
+				//far:表示摄像机视锥体远端面，默认为2000，这个值可以是无限的，说的简单点就是我们视觉所能看到的最远距离		
+				camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGTH, 1, 10000);
+				//设置相机的位置
+				camera.position.z = 1000;
+
+				scene = new THREE.Scene();
+				scene.position.x = 100;
+				scene.position.y = 300;
+				scene.rotation.z = -0.5;
+				createPosition();
+				
+				renderer = new THREE.CSS3DRenderer();
+				renderer.domElement.style.position = 'absolute';
+				renderer.setSize(WIDTH,HEIGTH);
+				// renderer.domElement.style.width = '100%';
+				// renderer.domElement.style.height = '100%';
+				//被渲染对象元素挂载到sigin-container节点下
+				elSignContainer.appendChild(renderer.domElement);
+
+				renderer.render(scene, camera);
+				animate();
+				transform(3000)
+			}
+
+			function animate() {
+				scene.rotation.y += 0.005;
+			    TWEEN.update();
+				 renderer.render(scene, camera);
+				frame = requestAnimationFrame(animate);
+				
+			}
+			//创建透明小方块
+			function createTransparentSquare() {
+				let elSquare = document.createElement('div');
+				elSquare.style.position = 'absolute';
+				elSquare.style.width = '80px';
+				elSquare.style.height = '80px';
+				elSquare.style.borderRadius = '12px';
+				elSquare.style.backgroundColor = 'rgba(0,0,0,0.2)';
+				//elSquare.style.backgroundColor = 'red';
+				//elSignContainer.appendChild(elSquare);
+				return elSquare;
+			}
+
+			function createPosition(){
+				let el,object;
+				for(let i=0;i<100;i++){
+					el = createTransparentSquare();
+					object = new THREE.CSS3DObject(el);
+					object.position.x = Math.random()*1400
+					object.position.y = Math.random()*600;
+					object.position.z = 0;
+					scene.add(object);
+					origin.push(object)
+				}
+				generateShape('sphere')
+				
+			}
+			function generateShape(name){
+				if(name == 'sphere'){
+					let vector = new THREE.Vector3();
+					let spherical = new THREE.Spherical();
+					for(let i = 0;i<100;i++){
+						let phi = Math.acos(-1 + (2 * i) / 100);
+						let theta = Math.sqrt(100 * Math.PI) * phi;
+											
+						let object = new THREE.Object3D();
+											
+						spherical.set(800, phi, theta);
+											
+						object.position.setFromSpherical(spherical);
+											
+						vector.copy(object.position).multiplyScalar(2);
+											
+						object.lookAt(vector);
+											
+						targets.sphere.push(object);
+					}
+
+				}else if(name == 'table'){
+					      for (var i = 0; i < 100; i++) {
+					        var object = new THREE.Object3D();
+					        object.position.x = (i % 20 + 1)*60 - 300 ; 
+					        object.position.y = -(Math.floor(i / 20) + 1)*60 + 100; 
+					        targets.table.push(object);
+					      }
+				}
+			}
+			function transform(duration){
+				 TWEEN.removeAll()
+				for (let i = 0; i < 100; i++) {
+					let target = targets.sphere[i];
+					new TWEEN.Tween(origin[i].position)
+					.to({
+						x: target.position.x,
+						y: target.position.y,
+						z: target.position.z
+					}, Math.random() * duration + duration)
+					.easing(TWEEN.Easing.Exponential.InOut)
+					.start();
+				    new TWEEN.Tween(origin[i].rotation)
+					    .to({
+					          x: target.rotation.x,
+					          y: target.rotation.y,
+					          z: target.rotation.z
+					          }, Math.random() * duration + duration)
+					          .easing(TWEEN.Easing.Exponential.InOut)
+					          .start();
+				}
+				 new TWEEN.Tween(camera.position)
+				          .to({
+				            z: 3000
+				          }, duration)
+				          .onUpdate(function(){
+							  console.log(camera.position.z)
+							  renderer.render(scene, camera)
+						  })
+				          .start();
+			}
+		</script>
+	</body>
+</html>
