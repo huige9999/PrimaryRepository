@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>子级百分比的参照</title>
+		<style>
+			.container1 {
+				width: 500px;
+				height: 500px;
+				background-color: red;
+			}
+
+			.container1>.sub {
+				width: 50%;
+				height: 50%;
+				background-color: green;
+			}
+
+			.container2 {
+				background-color: red;
+				position: relative;
+			}
+
+			.container2>.container2-sub1 {
+				width: 400px;
+				height: 400px;
+				background-color: green;
+			}
+
+			.container2>.container2-sub1>.container2-sub2 {
+				background-color: blue;
+				width: 50%;
+				height: 50%;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 子元素没有设置定位的情况 -->
+		<!-- 	<div class="container1">
+			<div class="sub">
+				
+			</div>
+		</div> -->
+		<!-- 子元素设置定位的情况 -->
+		<!-- 	<div class="container2">
+			<div class="container2-sub1">
+				<div class="container2-sub2">
+					
+				</div>
+			</div>
+		</div> -->
+	</body>
+</html>

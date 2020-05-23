@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>命名空间方式</title>
+	</head>
+	<body>
+		<script src="./a.js"></script>
+		<script src="./b.js"></script>
+		<script>
+			moduleA.method1();
+			moduleB.method1();
+			console.log(moduleB.data);
+			//模块成员依然可以被修改
+			moduleB.data = 'anything';
+			console.log(moduleB.data);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.aniObj{
+				width: 80px;
+				height: 80px;
+				border-radius: 50%;
+				background-color: red;
+				animation-name: moveAni;
+				animation-timing-function: linear;
+				animation-duration: 2s;
+				animation-iteration-count: 1;
+			/* 	animation-fill-mode:forwards; */
+			/* 	animation-fill-mode:backwards; */
+			    animation-fill-mode: both;
+				animation-delay: 3s;
+			}
+			@keyframes moveAni{
+				from{
+					transform: translate3d(0,0,0);
+					background-color: blue;
+				}
+				to{
+					transform: translate3d(300px,300px,0);
+					background-color:grey;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="aniObj">
+			
+		</div>
+	</body>
+</html>
